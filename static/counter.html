@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Счетчик</title>
+    <style>
+        body {
+            background-color: grey;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #count-container {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        #count {
+            font-size: 5em;
+            margin: 0 0.5em;
+        }
+
+        #increment-button, #reset-button, #set {
+            font-size: 1em;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            margin: 0.5em;
+        }
+
+        #increment-button:disabled, #reset-button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        #count-container .count-max {
+            color: red;
+        }
+
+        input {
+            font-size: 1em;
+            padding: 0.5em;
+            border: none;
+            border-radius: 5px;
+            margin: 0.5em;
+        }
+
+        .count-max {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h1>Счетчик</h1>
+<p>Количество кликов: <span id="count">0</span></p>
+<button id="increment-button">increment</button>
+<button id="reset-button">reset</button>
+
+<div>
+    <input id="max" type="number" placeholder="Max">
+    <input id="min" type="number" placeholder="Min">
+    <button id="set">set</button>
+</div>
+
+<script>
+    let count = 0;
+    let maxCount = 10;
+    let minCount = 0;
+    const countElement = document.getElementById("count");
+    const incrementButton = document.getElementById("increment-button");
+    const resetButton = document.getElementById("reset-button");
+    const max = document.getElementById("max")
+    const min = document.getElementById("min")
+    const set = document.getElementById("set")
+
+    function increment() {
+        count++;
+        countElement.innerText = count;
+        checkCount();
+    }
+
+    function reset() {
+        count = 0;
+        countElement.innerText = count;
+        checkCount();
+    }
+
+    function setCount() {
+        maxCount = parseInt(max.value);
+        minCount = parseInt(min.value);
+        if (minCount > maxCount) {
+            alert("Min value cannot be greater than Max value");
+        } else {
+            count = minCount;
+            countElement.innerText = count;
+            checkCount();
+        }
+    }
+
+    function checkCount() {
+        if (count <= minCount) {
+            resetButton.disabled = true;
+        } else {
+            resetButton.disabled = false;
+        }
+
+        if (count >= maxCount) {
+            incrementButton.disabled = true;
+            countElement.classList.add("count-max");
+        } else {
+            incrementButton.disabled = false;
+            countElement.classList.remove("count-max");
+        }
+    }
+
+    incrementButton.addEventListener("click", increment);
+    resetButton.addEventListener("click", reset);
+    set.addEventListener("click", setCount);
+
+</script>
+</body>
+</html>
